@@ -53,7 +53,7 @@ local drawing_new = Drawing.new
                     smoothness = 3, -- anything over 5 = aim assist,  1 = lock on (using 1 might get u banned)
                     fov_size = 150, -- 150-450 = preferred
                     -- esp settings
-                    use_esp = true,
+                    use_esp = false,
                     esp_toggle_key = Enum.KeyCode.O,
                     rainbow_speed = 5,
                     use_rainbow = false,
