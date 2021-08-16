@@ -37,7 +37,7 @@ local drawing_new = Drawing.new
                     -- aimbot settings
                     use_aimbot = false,
                     use_wallcheck = true,
-                    team_check = true
+                    team_check = true,
                     loop_all_humanoids = false, -- will allow aimbot to everything that has a humanoid, likely *VERY* laggy
                     max_dist = 9e9, -- 9e9 = very big
                     allow_toggle = {
