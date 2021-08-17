@@ -37,9 +37,9 @@ local center_screen = vector2_new((screen_size.X / 2), (screen_size.Y / 2))
 local _aimsp_settings
 _aimsp_settings = {
     -- aimbot settings
-    use_aimbot = true,
+    use_aimbot = false,
     use_wallcheck = false,
-    team_check = true,
+    team_check = false,
     loop_all_humanoids = false, -- will allow aimbot to everything that has a humanoid, likely *VERY* laggy
     max_dist = 9e9, -- 9e9 = very big
     allow_toggle = {
@@ -55,10 +55,10 @@ _aimsp_settings = {
     smoothness = 2, -- anything over 5 = aim assist,  1 = lock on (using 1 might get u banned)
     fov_size = 75, -- 150-450 = preferred
     -- esp settings
-    use_esp = true,
+    use_esp = false,
     esp_toggle_key = Enum.KeyCode.O,
     rainbow_speed = 5,
-    use_rainbow = true,
+    use_rainbow = false,
     tracers = true,
     box = true,
     name = false,
