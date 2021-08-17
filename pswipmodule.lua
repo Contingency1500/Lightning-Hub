@@ -1,6 +1,7 @@
 --Written by Ch0nky#9785
 --Thanks for letting me use this!
 --All credits go to him!
+--Modified to work with Project Scorpion
 local drawing_new = Drawing.new
 local vector2_new = Vector2.new
 local vector3_new = Vector3.new
@@ -383,6 +384,42 @@ elseif game.PlaceId == 7255828467 then
         return result
     end
 elseif game.PlaceId == 2607077439 then
+    debounces.custom_players = true
+    local player_loc = workspace.Chars
+
+    get_players = function()
+        local result = {}
+
+        local lp_team = local_player.Team
+        local players_children = players:GetChildren()
+
+        for idx, val in pairs(player_loc:GetChildren()) do
+            if players_children[idx] then
+                result[#result + 1] = val
+            end
+        end
+
+        return result
+    end
+elseif game.PlaceId == 6417036614 then
+    debounces.custom_players = true
+    local player_loc = workspace.Chars
+
+    get_players = function()
+        local result = {}
+
+        local lp_team = local_player.Team
+        local players_children = players:GetChildren()
+
+        for idx, val in pairs(player_loc:GetChildren()) do
+            if players_children[idx] then
+                result[#result + 1] = val
+            end
+        end
+
+        return result
+    end
+elseif game.PlaceId == 6125258259 then
     debounces.custom_players = true
     local player_loc = workspace.Chars
 
