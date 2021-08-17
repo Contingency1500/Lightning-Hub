@@ -2,6 +2,7 @@
 --Thanks for letting me use this!
 --All credits go to him!
 --Modified to work with Project Scorpion
+--Team check and wallcheck simply do not work, don't know the cause
 local drawing_new = Drawing.new
 local vector2_new = Vector2.new
 local vector3_new = Vector3.new
