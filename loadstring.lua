@@ -4,4 +4,4 @@
            Trade Tower
            Entry Point
 ]]--
-loadstring(game:HttpGet("https://raw.githubusercontent.com/gen40/unknown/main/main.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/MarieJoker/unknown/main/main.lua"))()
