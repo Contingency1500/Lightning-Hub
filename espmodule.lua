@@ -1,4 +1,4 @@
---Written by Ch0nky#9785
+--Written by Ch0nky#9785 (https://github.com/xChonkster)
 --Thanks for letting me use this!
 --All credits go to him!
 
@@ -42,7 +42,7 @@ local _aimsp_settings; _aimsp_settings = {
             works best with closest_to_you and use_backwards_iteration.table_index set to false
         ]]
 
-        flip_cframe = true, -- detectable, works alot better
+        flip_cframe = false, -- detectable, works alot better
         flip_mouse = false, -- not detectable, wanky
     },
 
