@@ -42,8 +42,8 @@ local _aimsp_settings; _aimsp_settings = {
             works best with closest_to_you and use_backwards_iteration.table_index set to false
         ]]
 
-        flip_cframe = false, -- detectable, works alot better
-        flip_mouse = true, -- not detectable, wanky
+        flip_cframe = true, -- detectable, works alot better
+        flip_mouse = false, -- not detectable, wanky
     },
 
     wall_check_method = {
@@ -83,7 +83,7 @@ local _aimsp_settings; _aimsp_settings = {
         usually doesnt lagg
     ]]
 
-    use_aimbot = true,
+    use_aimbot = false,
     use_wallcheck = true, -- checks for walls
     team_check = true, -- turn off for ffa games
     loop_all_humanoids = false, -- laggy, if toggled in-game you have to rejoin
@@ -98,11 +98,11 @@ local _aimsp_settings; _aimsp_settings = {
         closest_to_you = false, -- will sometimes not work, backwards iteration will make this alot more consistent
     },
     toggle_hud_key = Enum.KeyCode.P, -- toggle drawing
-    smoothness = 4, -- anything over 5 = aim assist,  1 = lock on (using 1 might get u banned)
-    fov_size = 250; -- <450 = safezone
+    smoothness = 1, -- anything over 5 = aim assist,  1 = lock on (using 1 might get u banned)
+    fov_size = 50; -- <450 = safezone
 
     -- esp settings
-    use_esp = true,
+    use_esp = false,
     esp_toggle_key = Enum.KeyCode.L,
     esp_thickness = 2, -- thickness in pixels
     rainbow_speed = 5,
