@@ -1,3 +1,4 @@
+local library = {}
 --Written by Ch0nky#9785 (https://github.com/xChonkster)
 --Thanks for letting me use this!
 --All credits go to him!
@@ -1028,3 +1029,4 @@ frame_wait:Connect(function()
     end
     run_aimbot(get_closest_player())
 end)
+return library
