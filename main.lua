@@ -53,6 +53,5 @@ if identifyexecutor() == "Synapse X" then
         repeat wait() until game:IsLoaded()
         wait(4)
         loadstring(game:HttpGet("https://raw.githubusercontent.com/MarieJoker/unknown/main/main.lua"))()
-        end
     ]])
 end
