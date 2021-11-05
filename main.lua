@@ -48,7 +48,7 @@ else
     --universal
     loadstring(game:HttpGet("https://raw.githubusercontent.com/MarieJoker/unknown/main/games/universal.lua"))()
 end
-if identifyexecutor() == "Synapse X" then
+if identifyexecutor() == "Synapse X" then --checks if user is using Synapse X
     syn.queue_on_teleport([[
         repeat wait() until game:IsLoaded()
         wait(4)
