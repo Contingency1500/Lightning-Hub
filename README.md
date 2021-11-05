@@ -5,7 +5,7 @@
 [![MacOS](https://img.shields.io/badge/platform-MacOS-lightgrey.svg?style=plastic)](https://en.wikipedia.org/wiki/MacOS) 
 
 ## Information
-Free ROBLOX cheat script. This script will give you advantages over all players. .lua file loadable into ROBLOX game process. Available for Windows and MacOS operating systems.
+Free ROBLOX cheat script. This script will give you advantages over all players. main.lua file loadable into ROBLOX game process. Available for Windows and MacOS operating systems.
 
 ## Features
 *   **Aimbot** - aimlock
