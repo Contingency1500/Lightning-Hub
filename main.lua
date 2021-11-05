@@ -21,6 +21,18 @@ local Games = {
     [3606833500] = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/MarieJoker/unknown/main/games/strucid_zone_wars.lua"))()
     end,
+    [6125258259] = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/MarieJoker/unknown/main/games/operation_scorpion.lua"))()
+    end,
+    [7255828467] = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/MarieJoker/unknown/main/games/operation_scorpion.lua"))()
+    end,
+    [6417036614] = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/MarieJoker/unknown/main/games/operation_scorpion.lua"))()
+    end,
+    [2607077439] = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/MarieJoker/unknown/main/games/operation_scorpion.lua"))()
+    end
 }
 
 local t, x =
