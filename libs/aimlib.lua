@@ -93,7 +93,7 @@ local _aimsp_settings; _aimsp_settings = {
         usually doesnt lagg
     ]]
 
-    use_aimbot = true,
+    use_aimbot = false,
     use_wallcheck = true, -- checks for walls
     team_check = true, -- turn off for ffa games
     loop_all_humanoids = false, -- laggy, if toggled in-game you have to rejoin
@@ -112,11 +112,11 @@ local _aimsp_settings; _aimsp_settings = {
     fov_size = 150; -- <450 = safezone
 
     -- esp settings
-    use_esp = true,
+    use_esp = false,
     esp_toggle_key = Enum.KeyCode.L,
     esp_thickness = 1, -- thickness in pixels
     rainbow_speed = 5,
-    use_rainbow = true, -- rgb mode
+    use_rainbow = false, -- rgb mode
     crosshair = {
         use = false,
 
