@@ -1030,3 +1030,4 @@ frame_wait:Connect(function()
     run_aimbot(get_closest_player())
 end)
 return library
+
