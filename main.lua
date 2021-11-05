@@ -51,7 +51,7 @@ end
 if identifyexecutor() == "Synapse X" then
     syn.queue_on_teleport([[
         repeat wait() until game:IsLoaded()
-        wait(2)
+        wait(4)
         loadstring(game:HttpGet("https://raw.githubusercontent.com/MarieJoker/unknown/main/main.lua"))()
         end
     ]])
