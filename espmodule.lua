@@ -21,6 +21,7 @@ local instance_new = Instance.new
 local raycast_params_new = RaycastParams.new
 local enum_rft_blk = Enum.RaycastFilterType.Blacklist
 local glass = Enum.Material.Glass
+local string_find = string.find
 
 --[[
     todo
@@ -29,6 +30,14 @@ local glass = Enum.Material.Glass
 ]]
 
 --<- settings ->--
+
+--[[
+    how to modify settings
+
+    most options will have a value that hold either "true" or "false" (without quotes)
+
+    true stands for yes and false stands for no
+]]
 
 local _aimsp_settings; _aimsp_settings = {
 
@@ -44,7 +53,7 @@ local _aimsp_settings; _aimsp_settings = {
         ]]
 
         flip_cframe = false, -- detectable, works alot better
-        flip_mouse = false, -- not detectable, wanky
+        flip_mouse = true, -- not detectable, wanky
     },
 
     wall_check_method = {
@@ -74,7 +83,7 @@ local _aimsp_settings; _aimsp_settings = {
             *can* be replaced by setting use_wallcheck to false, although not ideal
         ]]
 
-        table_index = true; -- less lagg, less reliable
+        table_index = true; -- less lagg, less reliable (sometimes)
     },
 
     ignore_parts = true,
@@ -84,7 +93,7 @@ local _aimsp_settings; _aimsp_settings = {
         usually doesnt lagg
     ]]
 
-    use_aimbot = false,
+    use_aimbot = true,
     use_wallcheck = true, -- checks for walls
     team_check = true, -- turn off for ffa games
     loop_all_humanoids = false, -- laggy, if toggled in-game you have to rejoin
@@ -99,15 +108,15 @@ local _aimsp_settings; _aimsp_settings = {
         closest_to_you = false, -- will sometimes not work, backwards iteration will make this alot more consistent
     },
     toggle_hud_key = Enum.KeyCode.P, -- toggle drawing
-    smoothness = 1, -- anything over 5 = aim assist,  1 = lock on (using 1 might get u banned)
-    fov_size = 50; -- <450 = safezone
+    smoothness = 3, -- anything over 5 = aim assist,  1 = lock on (using 1 might get u banned)
+    fov_size = 150; -- <450 = safezone
 
     -- esp settings
-    use_esp = false,
+    use_esp = true,
     esp_toggle_key = Enum.KeyCode.L,
-    esp_thickness = 2, -- thickness in pixels
+    esp_thickness = 1, -- thickness in pixels
     rainbow_speed = 5,
-    use_rainbow = false, -- rgb mode
+    use_rainbow = true, -- rgb mode
     crosshair = {
         use = false,
 
@@ -116,6 +125,7 @@ local _aimsp_settings; _aimsp_settings = {
         length = 8;
     },
     tracers = true,
+    foot_circle = false, -- (laggy)
     looking_at_tracers = {
         use = true,
 
@@ -174,6 +184,7 @@ local objects; objects = {
         right = nil,
         left = nil,
     },
+    foot_circles = {},
     look_at = {
         tracer = nil,
         point = nil;
@@ -234,6 +245,15 @@ local utility; utility = {
             Visible = false,
             instance = "Text";
         })
+
+        if aimsp_settings.foot_circle then
+            for idx, val in pairs(objects.foot_circles) do
+                utility.update_drawing(objects.foot_circles, idx, {
+                    Visible = false,
+                    instance = "Line";
+                })
+            end
+        end
     end,
 
     update = function(str)
@@ -248,11 +268,7 @@ local utility; utility = {
     end,
 
     is_inside_fov = function(point)
-        if aimsp_settings.rage_mode.use then
-            return true
-        end
-
-        return (point.x - objects.fov.Position.X) ^ 2 + (point.y - objects.fov.Position.Y) ^ 2 <= objects.fov.Radius ^ 2
+        return aimsp_settings.rage_mode.use or ((point.x - objects.fov.Position.X) ^ 2 + (point.y - objects.fov.Position.Y) ^ 2 <= objects.fov.Radius ^ 2)
     end,
     
     to_screen = function(point)
@@ -263,6 +279,24 @@ local utility; utility = {
         end
 
         return vector2_new(screen_pos.X, screen_pos.Y), screen_pos, in_screen
+    end,
+
+    get_vertices = function(base_position, mul)
+        local size = vector3_new(1, 1, 1) * mul
+    
+        local vertices = {}
+    
+        vertices.top = base_position + vector3_new(0, 0, size.Z)
+        vertices.bottom = base_position + vector3_new(0, 0, -size.Z)
+        vertices.right = base_position + vector3_new(-size.X, 0, 0)
+        vertices.left = base_position + vector3_new(size.X, 0, 0)
+        
+        vertices.corner1 = base_position + (vector3_new(0, 0, size.Z) + vector3_new(-size.Z, 0, 0)) / 1.5
+        vertices.corner3 = base_position + (vector3_new(0, 0, -size.Z) + vector3_new(size.Z, 0, 0)) / 1.5
+        vertices.corner4 = base_position + (vector3_new(size.X, 0, 0) + vector3_new(0, 0, size.Z)) / 1.5
+        vertices.corner2 = base_position + (vector3_new(-size.X, 0, 0) + vector3_new(0, 0, -size.Z)) / 1.5
+        
+        return vertices
     end,
 
     is_part_visible = function(origin_part, part)
@@ -437,8 +471,6 @@ players.PlayerRemoving:Connect(function(plr)
 end)
 
 uis.InputBegan:Connect(function(key, gmp)
-    if gmp then return end
-
     if key.KeyCode == aimsp_settings.toggle.key and not aimsp_settings.toggle.r_mouse_button then
         debounces.start_aim = not debounces.start_aim
         
@@ -449,17 +481,13 @@ uis.InputBegan:Connect(function(key, gmp)
         aimsp_settings.use_esp = not aimsp_settings.use_esp
 
         utility.update("toggled esp: " .. tostring(aimsp_settings.use_esp))
-    end
-end)
-
-mouse.Button2Down:Connect(function()
-    if aimsp_settings.toggle.r_mouse_button then
+    elseif aimsp_settings.toggle.r_mouse_button and key.UserInputType == Enum.UserInputType.MouseButton2 then
         debounces.start_aim = true
     end
 end)
 
-mouse.Button2Up:Connect(function()
-    if aimsp_settings.toggle.r_mouse_button then
+uis.InputEnded:Connect(function(key, gmp)
+    if aimsp_settings.toggle.r_mouse_button and key.UserInputType == Enum.UserInputType.MouseButton2 then
         debounces.start_aim = false
     end
 end)
@@ -492,24 +520,28 @@ elseif game.PlaceId == 18164449 then -- base wars
 elseif game.PlaceId == 292439477 then -- phantom forces
     get_players = function()
         local leaderboard = local_player.PlayerGui.Leaderboard.Main -- ik you're looking pf devs ;)
+        local folders = { -- hello again LOL
+            Phantoms = "Bright blue",
+            Ghosts = "Bright orange";
+        }
 
         if leaderboard then
             if aimsp_settings.team_check then
                 local is_ghost = pcall(function()
                     return leaderboard.Ghosts.DataFrame.Data[local_player.Name]
                 end)
-
-                return workspace.Players[(is_ghost and "Phantoms") or "Ghosts"]:GetChildren()
+                
+                return workspace.Players[folders[(is_ghost and "Phantoms") or "Ghosts"]]:GetChildren()
             else
                 local instance_table = {}
 
-                for idx, val in pairs(workspace.Players.Phantoms:GetChildren()) do
+                for idx, val in pairs(workspace.Players["Bright blue"]:GetChildren()) do
                     if val:IsA("Model") then
                         instance_table[#instance_table + 1] = val
                     end
                 end
 
-                for idx, val in pairs(workspace.Players.Ghosts:GetChildren()) do
+                for idx, val in pairs(workspace.Players["Bright orange"]:GetChildren()) do
                     if val:IsA("Model") then
                         instance_table[#instance_table + 1] = val
                     end
@@ -716,13 +748,15 @@ frame_wait:Connect(function()
             local plr_char = ((aimsp_settings.loop_all_humanoids or debounces.custom_players) and plr) or plr.Character
             if plr_char == nil then continue; end
 
-            local root_part = plr_char:FindFirstChild("HumanoidRootPart") or plr_char:FindFirstChild("UpperTorso") or plr_char:FindFirstChild("LowerTorso") or plr_char:FindFirstChild("Torso") or plr_char.PrimaryPart
+            local root_part = plr_char:FindFirstChild("Torso") or plr_char:FindFirstChild("UpperTorso") or plr_char:FindFirstChild("LowerTorso") or plr_char:FindFirstChild("HumanoidRootPart") or plr_char:FindFirstChild("Head") or plr_char:FindFirstChildOfClass("BasePart")
             if root_part == nil then continue; end
             
             local head = plr_char:FindFirstChild("Head") or root_part
 
             local plr_screen, scr_z, visible, rage = utility.to_screen(root_part.Position)
             local mag = (root_part.Position - local_player.Character.HumanoidRootPart.Position).Magnitude
+
+            if mag > aimsp_settings.max_dist then continue; end
 
             if aimsp_settings.use_esp and ignored_index == 0 then
                 local col = (aimsp_settings.use_rainbow and utility.get_rainbow()) or white
@@ -748,7 +782,7 @@ frame_wait:Connect(function()
 					local tracer_pos = utility.to_screen(camera.CFrame:pointToWorldSpace(object_space_pos))
                     
                     utility.update_drawing(objects.tracers, plr_char:GetDebugId(), {
-                        Visible = objects.fov.Visible,
+                        Visible = aimsp_settings.use_esp,
                         Thickness = aimsp_settings.esp_thickness,
                         Color = (aimsp_settings.use_rainbow and utility.get_rainbow()) or color3_new(255 / mag, mag / 255, 0),
                         To = vector2_new(tracer_pos.X, tracer_pos.Y),
@@ -760,7 +794,7 @@ frame_wait:Connect(function()
                 if aimsp_settings.box then
                     if a_visible and b_visible and c_visible and d_visible then
                         utility.update_drawing(objects.quads, plr_char:GetDebugId(), {
-                            Visible = objects.fov.Visible,
+                            Visible = aimsp_settings.use_esp,
                             Thickness = aimsp_settings.esp_thickness,
                             Color = col,
                             PointA = point_a_scr,
@@ -783,7 +817,7 @@ frame_wait:Connect(function()
 
                     if a_visible and b_visible then
                         utility.update_drawing(objects.looking_at_tracers, plr_char:GetDebugId(), {
-                            Visible = objects.fov.Visible,
+                            Visible = aimsp_settings.use_esp,
                             Thickness = aimsp_settings.looking_at_tracers.thickness,
                             Color = aimsp_settings.looking_at_tracers.color or white,
                             To = point_a_src,
@@ -792,6 +826,111 @@ frame_wait:Connect(function()
                         })
                     else
                         utility.update_drawing(objects.looking_at_tracers, plr_char:GetDebugId(), {
+                            Visible = false,
+                            instance = "Line";
+                        })
+                    end
+                end
+
+                if aimsp_settings.foot_circle then
+                    local root_position = root_part.Position
+
+                    local vertices = utility.get_vertices(vector3_new(root_position.X, root_position.Y - 3, root_position.Z), 4)
+
+                    local point_a, z, a_visible = utility.to_screen(vertices.top)
+                    local point_b, z, b_visible = utility.to_screen(vertices.corner1)
+                    local point_c, z, c_visible = utility.to_screen(vertices.right)
+                    local point_d, z, d_visible = utility.to_screen(vertices.corner2)
+                    local point_e, z, e_visible = utility.to_screen(vertices.bottom)
+                    local point_f, z, f_visible = utility.to_screen(vertices.corner3)
+                    local point_g, z, g_visible = utility.to_screen(vertices.left)
+                    local point_h, z, h_visible = utility.to_screen(vertices.corner4)
+
+                    if a_visible and b_visible and c_visible and d_visible and e_visible and f_visible and g_visible and h_visible then
+                        utility.update_drawing(objects.foot_circles, plr_char:GetDebugId() .. "1", {
+                            Visible = aimsp_settings.use_esp,
+                            Thickness = aimsp_settings.esp_thickness,
+                            Color = (aimsp_settings.use_rainbow and utility.get_rainbow()) or white,
+                            To = point_a,
+                            From = point_b,
+                            instance = "Line";
+                        })
+
+                        utility.update_drawing(objects.foot_circles, plr_char:GetDebugId() .. "2", {
+                            Visible = aimsp_settings.use_esp,
+                            Thickness = aimsp_settings.esp_thickness,
+                            Color = (aimsp_settings.use_rainbow and utility.get_rainbow()) or white,
+                            To = point_b,
+                            From = point_c,
+                            instance = "Line";
+                        })
+
+                        utility.update_drawing(objects.foot_circles, plr_char:GetDebugId() .. "3", {
+                            Visible = aimsp_settings.use_esp,
+                            Thickness = aimsp_settings.esp_thickness,
+                            Color = (aimsp_settings.use_rainbow and utility.get_rainbow()) or white,
+                            To = point_c,
+                            From = point_d,
+                            instance = "Line";
+                        })
+
+                        utility.update_drawing(objects.foot_circles, plr_char:GetDebugId() .. "4", {
+                            Visible = aimsp_settings.use_esp,
+                            Thickness = aimsp_settings.esp_thickness,
+                            Color = (aimsp_settings.use_rainbow and utility.get_rainbow()) or white,
+                            To = point_d,
+                            From = point_e,
+                            instance = "Line";
+                        })
+
+                        utility.update_drawing(objects.foot_circles, plr_char:GetDebugId() .. "5", {
+                            Visible = aimsp_settings.use_esp,
+                            Thickness = aimsp_settings.esp_thickness,
+                            Color = (aimsp_settings.use_rainbow and utility.get_rainbow()) or white,
+                            To = point_e,
+                            From = point_f,
+                            instance = "Line";
+                        })
+
+                        utility.update_drawing(objects.foot_circles, plr_char:GetDebugId() .. "6", {
+                            Visible = aimsp_settings.use_esp,
+                            Thickness = aimsp_settings.esp_thickness,
+                            Color = (aimsp_settings.use_rainbow and utility.get_rainbow()) or white,
+                            To = point_f,
+                            From = point_g,
+                            instance = "Line";
+                        })
+
+                        utility.update_drawing(objects.foot_circles, plr_char:GetDebugId() .. "7", {
+                            Visible = aimsp_settings.use_esp,
+                            Thickness = aimsp_settings.esp_thickness,
+                            Color = (aimsp_settings.use_rainbow and utility.get_rainbow()) or white,
+                            To = point_g,
+                            From = point_h,
+                            instance = "Line";
+                        })
+
+                        utility.update_drawing(objects.foot_circles, plr_char:GetDebugId() .. "8", {
+                            Visible = aimsp_settings.use_esp,
+                            Thickness = aimsp_settings.esp_thickness,
+                            Color = (aimsp_settings.use_rainbow and utility.get_rainbow()) or white,
+                            To = point_h,
+                            From = point_a,
+                            instance = "Line";
+                        })
+                    else
+                        for idx, val in pairs(objects.foot_circles) do
+                            if string_find(idx, plr_char:GetDebugId()) then
+                                utility.update_drawing(objects.foot_circles, idx, {
+                                    Visible = false,
+                                    instance = "Line";
+                                })
+                            end
+                        end
+                    end
+                else
+                    for idx, val in pairs(objects.foot_circles) do
+                        utility.update_drawing(objects.foot_circles, idx, {
                             Visible = false,
                             instance = "Line";
                         })
@@ -823,7 +962,7 @@ frame_wait:Connect(function()
 
                     if visible then
                         utility.update_drawing(objects.labels, plr_char:GetDebugId(), {
-                            Visible = objects.fov.Visible,
+                            Visible = aimsp_settings.use_esp,
                             Color = col,
                             Position = scr_pos,
                             Text = plr_info,
@@ -903,6 +1042,7 @@ frame_wait:Connect(function()
     local run_aimbot;
     run_aimbot = function(closest_player)
         local visible_parts = {}
+        local find_new = false
         local last
         
         if aimsp_settings.use_aimbot and closest_player then
@@ -911,13 +1051,18 @@ frame_wait:Connect(function()
                     local screen_pos, src_pos_z, on_screen, rage = utility.to_screen(part.Position)
 
                     if on_screen or rage then
-                        if utility.is_inside_fov(screen_pos) and utility.is_part_visible(part, local_player.Character.HumanoidRootPart) then
+                        local inside_fov = utility.is_inside_fov(screen_pos)
+                        if inside_fov and utility.is_part_visible(part, local_player.Character.HumanoidRootPart) then
                             last = {
                                 scr_pos = screen_pos,
                                 on_screen = on_screen,
                                 obj = part;
                             };
                             visible_parts[part.Name] = last
+                        else
+                            if inside_fov then
+                                find_new = true
+                            end
                         end
                     end
                 end
@@ -957,7 +1102,7 @@ frame_wait:Connect(function()
                     Transparency = 1,
                     Thickness = aimsp_settings.esp_thickness,
                     Radius = radius / 2,
-                    Visible = objects.fov.Visible,
+                    Visible = aimsp_settings.use_esp,
                     Color = (debounces.start_aim and green) or white,
                     Position = lock_part.scr_pos,
                     instance = "Circle";
@@ -967,7 +1112,7 @@ frame_wait:Connect(function()
                     utility.update_drawing(objects.look_at, "tracer", {
                         Transparency = 1,
                         Thickness = aimsp_settings.esp_thickness,
-                        Visible = objects.fov.Visible,
+                        Visible = aimsp_settings.use_esp,
                         Color = green,
                         From = center_screen,
                         To = lock_part.scr_pos,
@@ -997,7 +1142,7 @@ frame_wait:Connect(function()
                         end
 
                         if should_move then
-                            mousemoverel((move_to_x - mouse.X) / 2, (move_to_y - (mouse.Y + 36)) / 2)
+                            mousemoverel((move_to_x - mouse.X), (move_to_y - (mouse.Y + 36)))
                         end
                     else
                         mousemoverel((lock_part.scr_pos.X - mouse.X) / aimsp_settings.smoothness, (lock_part.scr_pos.Y - (mouse.Y + 36)) / aimsp_settings.smoothness)
@@ -1014,19 +1159,22 @@ frame_wait:Connect(function()
                     Visible = false,
                     instance = "Circle";
                 })
-
+                
                 utility.update_drawing(objects.look_at, "tracer", {
                     Visible = false,
                     instance = "Line";
                 })
 
-                if aimsp_settings.use_aimbot and aimsp_settings.use_backwards_iteration.use then
-                    ignored_index = ignored_index + 1
-                    run_aimbot(get_closest_player())
+                if find_new then
+                    if aimsp_settings.use_aimbot and aimsp_settings.use_backwards_iteration.use then
+                        ignored_index = ignored_index + 1
+                        run_aimbot(get_closest_player())
+                    end
                 end
             end
         end
     end
+
     run_aimbot(get_closest_player())
 end)
 return library
