@@ -5,9 +5,19 @@
 
 local game = game;
 
+if not game:IsLoaded() then
+    repeat
+        wait();
+    until game:IsLoaded();
+end;
+
 local hook_meta_method = hookmetamethod;
 
 local get_namecall_method = getnamecallmethod or get_namecall_method;
+
+local hookfunc = hookfunction or hookfunc
+
+hookfunc(error, warn)
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/xChonkster/hub/main/libs/meta.lua"))()
 
@@ -19,12 +29,6 @@ if hook_meta_method then
         end;
     return old(...);
 end);
-
-if not game:IsLoaded() then
-    repeat
-        wait();
-    until game:IsLoaded();
-end;
 
 local games = {
     [292439477] = "pf",
