@@ -3,11 +3,13 @@
 --//  Written in Lua
 --//
 
-local game = game
+local game = game;
 
-if not checkcaller() then
-    return
-end
+if not game:IsLoaded() then
+    repeat
+        wait();
+    until game:IsLoaded();
+end;
 
 local games = {
     [292439477] = "pf",
@@ -17,22 +19,14 @@ local games = {
     [7255828467] = "operation_scorpion",
     [6417036614] = "operation_scorpion",
     [2607077439] = "operation_scorpion";
-}
+};
 
 local success, result = pcall(function()
-    return game:HttpGetAsync(string.format("https://github.com/MarieJoker/unknown/blob/main/games/%s.lua?raw=true", games[game.PlaceId]), true)
-end)
+    return game:HttpGetAsync(string.format("https://github.com/MarieJoker/unknown/blob/main/games/%s.lua?raw=true", games[game.PlaceId]));
+end);
 
 if success then
-    loadstring(result)()
+    loadstring(result)();
 else
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/MarieJoker/unknown/main/games/universal.lua"))()
-end
-if identifyexecutor() == "Synapse X" then
-    syn.queue_on_teleport([[
-        repeat wait() until game:IsLoaded()
-        wait(2)
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/MarieJoker/unknown/main/main.lua"))()
-        end
-    ]])
-end
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/MarieJoker/unknown/main/games/universal.lua"))();
+end;
