@@ -3,6 +3,7 @@ local library = {}
 --Thanks for letting me use this!
 --All credits go to him!
 
+local hookfunc = hookfunction or hookfunc
 local drawing_new = Drawing.new
 local vector2_new = Vector2.new
 local vector3_new = Vector3.new
@@ -22,6 +23,10 @@ local raycast_params_new = RaycastParams.new
 local enum_rft_blk = Enum.RaycastFilterType.Blacklist
 local glass = Enum.Material.Glass
 local string_find = string.find
+
+if hookfunc then
+    hookfunc(error, warn)
+end;
 
 --[[
     todo
