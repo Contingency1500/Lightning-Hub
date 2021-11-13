@@ -9,8 +9,6 @@ local hookmetamethod = hookmetamethod;
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/xChonkster/hub/main/libs/meta.lua"))()
 
-local players = game:GetService("Players");
-
 if hookmetamethod then
     local old;
     old = meta.main.__namecall.append(function(...)
