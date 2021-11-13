@@ -5,6 +5,21 @@
 
 local game = game;
 
+local hookmetamethod = hookmetamethod;
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/xChonkster/hub/main/libs/meta.lua"))()
+
+local players = game:GetService("Players");
+
+if hookmetamethod then
+    local old;
+    old = meta.main.__namecall.append(function(...)
+        if getnamecallmethod() == "Kick" then
+            return wait(9e9);
+        end;
+    return old(...);
+end);
+
 if not game:IsLoaded() then
     repeat
         wait();
@@ -26,7 +41,8 @@ local success, result = pcall(function()
 end);
 
 if success then
-    loadstring(result)();
-else
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/MarieJoker/unknown/main/games/universal.lua"))();
+        loadstring(result)();
+    else
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/MarieJoker/unknown/main/games/universal.lua"))();
+    end
 end;
