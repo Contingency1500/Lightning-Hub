@@ -42,5 +42,5 @@ if success then
         loadstring(result)();
     else
         loadstring(game:HttpGet("https://raw.githubusercontent.com/MarieJoker/unknown/main/games/universal.lua"))();
-    end
+    end;
 end;
