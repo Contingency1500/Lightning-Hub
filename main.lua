@@ -15,9 +15,11 @@ local hook_meta_method = hookmetamethod;
 
 local get_namecall_method = getnamecallmethod or get_namecall_method;
 
-local hookfunc = hookfunction or hookfunc
+local hookfunc = hookfunction or hookfunc;
 
-hookfunc(error, warn)
+if hookfunc then
+    hookfunc(error, warn);
+end;
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/xChonkster/hub/main/libs/meta.lua"))()
 
