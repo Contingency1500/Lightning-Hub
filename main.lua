@@ -5,14 +5,16 @@
 
 local game = game;
 
-local hookmetamethod = hookmetamethod;
+local hook_meta_method = hookmetamethod;
+
+local get_namecall_method = getnamecallmethod or get_namecall_method;
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/xChonkster/hub/main/libs/meta.lua"))()
 
-if hookmetamethod then
+if hook_meta_method then
     local old;
     old = meta.main.__namecall.append(function(...)
-        if getnamecallmethod() == "Kick" then
+        if get_namecall_method() == "Kick" then
             return wait(9e9);
         end;
     return old(...);
