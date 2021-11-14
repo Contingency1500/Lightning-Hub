@@ -24,13 +24,15 @@ end;
 loadstring(game:HttpGet("https://raw.githubusercontent.com/xChonkster/hub/main/libs/meta.lua"))()
 
 if hook_meta_method then
+do
     local old;
-    old = meta.main.__namecall.append(function(...)
-        if get_namecall_method() == "Kick" then
-            return wait(9e9);
-        end;
-    return old(...);
-end);
+        old = meta.main.__namecall.append(function(...)
+            if get_namecall_method() == "Kick" then
+                return wait(9e9);
+            end;
+        return old(...);
+    end);
+end;
 
 local games = {
     [292439477] = "pf",
