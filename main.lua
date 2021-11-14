@@ -21,7 +21,7 @@ if hookfunc then
     hookfunc(error, warn);
 end;
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/MarieJoker/unknown/main/libs/meta.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/MarieJoker/Lightning-Hub/main/libs/meta.lua"))()
 
 if hook_meta_method then
 do
