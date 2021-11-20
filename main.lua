@@ -17,7 +17,7 @@ end;
 
 local hook_meta_method = hookmetamethod;
 
-local get_namecall_method = getnamecallmethod or get_namecall_method;
+local get_namecall_method = get_namecall_method or getnamecallmethod;
 
 local hookfunc = hookfunction or hookfunc;
 
