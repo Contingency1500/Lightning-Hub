@@ -5,6 +5,10 @@
 
 local game = game;
 
+local Players = game:GetService("Players");
+
+local LocalPlayer = Players.LocalPlayer;
+
 if not game:IsLoaded() then
     repeat
         wait();
@@ -21,16 +25,16 @@ if hookfunc then
     hookfunc(error, warn);
 end;
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/MarieJoker/Lightning-Hub/main/libs/meta.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/MarieJoker/Lightning-Hub/main/libs/meta.lua"))();
 
 if hook_meta_method then
 do
     local old;
-        old = meta.main.__namecall.append(function(...)
-            if get_namecall_method() == "Kick" then
+        old = meta.main.__namecall.append(function(Self, ...)
+            if Self == LocalPlayer and get_namecall_method() == "Kick" then
                 return wait(9e9);
             end;
-        return old(...);
+        return old(Self, ...);
     end);
 end;
 
