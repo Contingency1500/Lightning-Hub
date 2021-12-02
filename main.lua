@@ -46,7 +46,10 @@ local games = {
     [7255828467] = "operation_scorpion",
     [6417036614] = "operation_scorpion",
     [2607077439] = "operation_scorpion",
-    [2625195454] = "ep";
+    [2625195454] = "ep",
+    [2797881676] = "ep",
+    [3200010305] = "ep",
+    [3590667014] = "ep";
 };
 
 local success, result = pcall(function()
