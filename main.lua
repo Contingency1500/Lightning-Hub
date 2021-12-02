@@ -49,7 +49,8 @@ local games = {
     [2625195454] = "ep",
     [2797881676] = "ep",
     [3200010305] = "ep",
-    [3590667014] = "ep";
+    [3590667014] = "ep",
+    [4661507759] = "ep";
 };
 
 local success, result = pcall(function()
