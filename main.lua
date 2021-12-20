@@ -5,10 +5,6 @@
 
 local game = game;
 
-local Players = game:GetService("Players");
-
-local LocalPlayer = Players.LocalPlayer;
-
 if not game:IsLoaded() then
     repeat
         wait();
@@ -17,7 +13,7 @@ end;
 
 local hook_meta_method = hookmetamethod;
 
-local get_namecall_method = get_namecall_method or getnamecallmethod;
+local get_namecall_method = getnamecallmethod or get_namecall_method;
 
 local hookfunc = hookfunction or hookfunc;
 
@@ -25,32 +21,22 @@ if hookfunc then
     hookfunc(error, warn);
 end;
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/MarieJoker/Lightning-Hub/main/libs/meta.lua"))();
+loadstring(game:HttpGet("https://raw.githubusercontent.com/MarieJoker/unknown/main/libs/meta.lua"))()
 
 if hook_meta_method then
 do
     local old;
-        old = meta.main.__namecall.append(function(Self, ...)
-            if Self == LocalPlayer and get_namecall_method() == "Kick" then
+        old = meta.main.__namecall.append(function(...)
+            if get_namecall_method() == "Kick" then
                 return wait(9e9);
             end;
-        return old(Self, ...);
+        return old(...);
     end);
 end;
 
 local games = {
-    [292439477] = "pf",
-    [2377868063] = "strucid",
-    [3606833500] = "strucid_zone_wars",
-    [6125258259] = "operation_scorpion",
-    [7255828467] = "operation_scorpion",
-    [6417036614] = "operation_scorpion",
-    [2607077439] = "operation_scorpion",
     [2625195454] = "ep",
-    [2797881676] = "ep",
-    [3200010305] = "ep",
-    [3590667014] = "ep",
-    [4661507759] = "ep";
+    [3200010305] = "ep";
 };
 
 local success, result = pcall(function()
@@ -60,6 +46,6 @@ end);
 if success then
         loadstring(result)();
     else
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/MarieJoker/unknown/main/games/universal.lua"))();
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/MarieJoker/unknown/main/games/universal.lua", true))();
     end;
 end;
