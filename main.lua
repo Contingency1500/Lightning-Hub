@@ -1,7 +1,7 @@
---//
---//  Lightning Hub Loader
---//  Written in Lua
---//
+-->
+-->  Lightning Hub Loader
+-->  Written in Lua
+-->
 
 local game = game;
 
