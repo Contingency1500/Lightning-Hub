@@ -21,15 +21,13 @@ if hookfunc then
     hookfunc(error, warn);
 end;
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/MarieJoker/unknown/main/libs/meta.lua"))()
-
 if hook_meta_method then
 do
     local old;
-        old = meta.main.__namecall.append(function(...)
-            if get_namecall_method() == "Kick" then
-                return wait(9e9);
-            end;
+    old = hookmetamethod(game, "__namecall", function(...)
+        if getnamecallmethod() == "Kick" then
+            return nil;
+        end;
         return old(...);
     end);
 end;
