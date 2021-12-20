@@ -13,5 +13,8 @@ Free ROBLOX cheat script. This script will give you advantages over all players.
 *   **Misc** - miscellaneous features
 
 ## Acknowledgments
+*   [pwdsec](https://github.com/pwdsec)
+*   Great developer, great guy! Also works for Lightning Hub!
+
 *   [xChonkster](https://github.com/xChonkster)
-*   Without xChonkster I couldn't have made this so thank you so much for allowing me to use your aimsp library!
+*   Helped me with many things such as the loader!
