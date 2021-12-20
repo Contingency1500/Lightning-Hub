@@ -162,7 +162,7 @@ local SolarisLib = {
 
 
 local MainUI = game:GetObjects("rbxassetid://7835727566")[1]
-return("SolarisLib Loaded!")
+warn("loaded library!")
 local function MakeDraggable(topbarobject, object) 
     pcall(function()
 		local dragging, dragInput, mousePos, framePos = false
