@@ -7,7 +7,7 @@ local game = game;
 
 if not game:IsLoaded() then
     repeat
-        wait();
+        task.wait();
     until game:IsLoaded();
 end;
 
