@@ -14,7 +14,7 @@ Free ROBLOX cheat script. This script will give you advantages over all players.
 
 ## Acknowledgments
 *   [pwdsec](https://github.com/pwdsec)
-*   Great developer, great guy!
+    Great developer, great guy!
 
 *   [xChonkster](https://github.com/xChonkster)
 *   Helped me with many things such as the loader!
