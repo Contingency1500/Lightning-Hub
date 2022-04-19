@@ -1,3 +1,4 @@
+-- Made by https://github.com/xChonkster
 if meta then return end
 
 getgenv().meta = {}
