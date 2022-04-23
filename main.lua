@@ -3,10 +3,6 @@
 -->  Written in Lua
 -->
 
-local game = game;
-
-game.Loaded:Wait();
-
 local hook_meta_method = hookmetamethod;
 
 local get_namecall_method = getnamecallmethod or get_namecall_method;
